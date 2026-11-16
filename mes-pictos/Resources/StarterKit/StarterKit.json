@@ -1,0 +1,636 @@
+{
+ "version": 2,
+ "source": "ARASAAC",
+ "licence": "CC BY-NC-SA – ARASAAC",
+ "bar": {
+  "title": "Barre permanente",
+  "columns": 3,
+  "rows": 1,
+  "items": [
+   {
+    "label": "Aide",
+    "arasaac": 12252,
+    "spoken": "J'ai besoin d'aide",
+    "starter": true
+   },
+   {
+    "label": "Je veux",
+    "arasaac": 5441,
+    "starter": true
+   },
+   {
+    "label": "Ouvre",
+    "arasaac": 6875,
+    "starter": true
+   }
+  ]
+ },
+ "pages": [
+  {
+   "title": "Cartes critiques",
+   "columns": 3,
+   "rows": 2,
+   "items": [
+    {
+     "label": "Non",
+     "arasaac": 5526
+    },
+    {
+     "label": "Oui",
+     "arasaac": 5584
+    },
+    {
+     "label": "Attends",
+     "arasaac": 16697
+    },
+    {
+     "label": "Fini",
+     "arasaac": 5358,
+     "spoken": "C'est fini"
+    },
+    {
+     "label": "Encore",
+     "arasaac": 32753
+    },
+    {
+     "label": "Pause",
+     "arasaac": 38213,
+     "spoken": "Je veux une pause"
+    }
+   ]
+  },
+  {
+   "title": "Débuts de phrase",
+   "columns": 3,
+   "rows": 2,
+   "items": [
+    {
+     "label": "Je veux",
+     "arasaac": 5441,
+     "starter": true
+    },
+    {
+     "label": "Je vois",
+     "arasaac": 11619,
+     "starter": true
+    },
+    {
+     "label": "J'entends",
+     "arasaac": 6572,
+     "starter": true
+    },
+    {
+     "label": "J'ai",
+     "arasaac": 7271,
+     "starter": true
+    },
+    {
+     "label": "C'est",
+     "arasaac": 5466,
+     "starter": true
+    },
+    {
+     "label": "Je sens",
+     "arasaac": 2486,
+     "starter": true
+    }
+   ]
+  },
+  {
+   "title": "Manger",
+   "columns": 6,
+   "rows": 3,
+   "items": [
+    {
+     "label": "pomme",
+     "arasaac": 2462,
+     "spoken": "une pomme"
+    },
+    {
+     "label": "banane",
+     "arasaac": 2530,
+     "spoken": "une banane"
+    },
+    {
+     "label": "fraise",
+     "arasaac": 2400,
+     "spoken": "une fraise"
+    },
+    {
+     "label": "compote",
+     "arasaac": 34012,
+     "spoken": "une compote"
+    },
+    {
+     "label": "pain",
+     "arasaac": 2494,
+     "spoken": "du pain"
+    },
+    {
+     "label": "fromage",
+     "arasaac": 2541,
+     "spoken": "du fromage"
+    },
+    {
+     "label": "yaourt",
+     "arasaac": 2618,
+     "spoken": "un yaourt"
+    },
+    {
+     "label": "gâteau",
+     "arasaac": 2502,
+     "spoken": "un gâteau"
+    },
+    {
+     "label": "biscuit",
+     "arasaac": 8312,
+     "spoken": "un biscuit"
+    },
+    {
+     "label": "chocolat",
+     "arasaac": 25940,
+     "spoken": "du chocolat"
+    },
+    {
+     "label": "pâtes",
+     "arasaac": 8652,
+     "spoken": "des pâtes"
+    },
+    {
+     "label": "riz",
+     "arasaac": 39387,
+     "spoken": "du riz"
+    },
+    {
+     "label": "poulet",
+     "arasaac": 24815,
+     "spoken": "du poulet"
+    },
+    {
+     "label": "frites",
+     "arasaac": 2505,
+     "spoken": "des frites"
+    },
+    {
+     "label": "pizza",
+     "arasaac": 2527,
+     "spoken": "une pizza"
+    },
+    {
+     "label": "eau",
+     "arasaac": 2248,
+     "spoken": "de l'eau"
+    },
+    {
+     "label": "lait",
+     "arasaac": 2445,
+     "spoken": "du lait"
+    },
+    {
+     "label": "jus",
+     "arasaac": 2624,
+     "spoken": "du jus d'orange"
+    }
+   ]
+  },
+  {
+   "title": "Jouer",
+   "columns": 4,
+   "rows": 3,
+   "items": [
+    {
+     "label": "ballon",
+     "arasaac": 2269,
+     "spoken": "un ballon"
+    },
+    {
+     "label": "voiture",
+     "arasaac": 2340,
+     "spoken": "une petite voiture"
+    },
+    {
+     "label": "poupée",
+     "arasaac": 26238,
+     "spoken": "une poupée"
+    },
+    {
+     "label": "puzzle",
+     "arasaac": 2540,
+     "spoken": "un puzzle"
+    },
+    {
+     "label": "cubes",
+     "arasaac": 26403,
+     "spoken": "des cubes"
+    },
+    {
+     "label": "livre",
+     "arasaac": 25191,
+     "spoken": "un livre"
+    },
+    {
+     "label": "tablette",
+     "arasaac": 28099,
+     "spoken": "la tablette"
+    },
+    {
+     "label": "télé",
+     "arasaac": 25498,
+     "spoken": "la télé"
+    },
+    {
+     "label": "musique",
+     "arasaac": 24791,
+     "spoken": "de la musique"
+    },
+    {
+     "label": "dessiner",
+     "arasaac": 8088
+    },
+    {
+     "label": "bulles",
+     "arasaac": 8389,
+     "spoken": "des bulles"
+    },
+    {
+     "label": "toboggan",
+     "arasaac": 26495,
+     "spoken": "le toboggan"
+    }
+   ]
+  },
+  {
+   "title": "Corps et soins",
+   "columns": 4,
+   "rows": 3,
+   "items": [
+    {
+     "label": "toilettes",
+     "arasaac": 5921,
+     "spoken": "les toilettes"
+    },
+    {
+     "label": "dormir",
+     "arasaac": 6479
+    },
+    {
+     "label": "mal",
+     "arasaac": 30620,
+     "spoken": "J'ai mal"
+    },
+    {
+     "label": "laver les mains",
+     "arasaac": 8977,
+     "spoken": "me laver les mains"
+    },
+    {
+     "label": "bain",
+     "arasaac": 6058,
+     "spoken": "le bain"
+    },
+    {
+     "label": "brosser les dents",
+     "arasaac": 2326,
+     "spoken": "me brosser les dents"
+    },
+    {
+     "label": "s'habiller",
+     "arasaac": 6627
+    },
+    {
+     "label": "chaussures",
+     "arasaac": 2622,
+     "spoken": "les chaussures"
+    },
+    {
+     "label": "manteau",
+     "arasaac": 2242,
+     "spoken": "le manteau"
+    },
+    {
+     "label": "médicament",
+     "arasaac": 8359,
+     "spoken": "un médicament"
+    },
+    {
+     "label": "mouchoir",
+     "arasaac": 17284,
+     "spoken": "un mouchoir"
+    },
+    {
+     "label": "boire",
+     "arasaac": 6061
+    }
+   ]
+  },
+  {
+   "title": "Personnes",
+   "columns": 4,
+   "rows": 3,
+   "items": [
+    {
+     "label": "maman",
+     "arasaac": 2458
+    },
+    {
+     "label": "papa",
+     "arasaac": 31146
+    },
+    {
+     "label": "frère",
+     "arasaac": 2423,
+     "spoken": "mon frère"
+    },
+    {
+     "label": "sœur",
+     "arasaac": 2422,
+     "spoken": "ma sœur"
+    },
+    {
+     "label": "mamie",
+     "arasaac": 23710
+    },
+    {
+     "label": "papi",
+     "arasaac": 23718
+    },
+    {
+     "label": "bébé",
+     "arasaac": 6060,
+     "spoken": "le bébé"
+    },
+    {
+     "label": "copain",
+     "arasaac": 25790,
+     "spoken": "un copain"
+    },
+    {
+     "label": "maîtresse",
+     "arasaac": 2456,
+     "spoken": "la maîtresse"
+    },
+    {
+     "label": "orthophoniste",
+     "arasaac": 2454,
+     "spoken": "l'orthophoniste"
+    },
+    {
+     "label": "docteur",
+     "arasaac": 6561,
+     "spoken": "le docteur"
+    },
+    {
+     "label": "moi",
+     "arasaac": 6632
+    }
+   ]
+  },
+  {
+   "title": "Émotions",
+   "columns": 4,
+   "rows": 2,
+   "items": [
+    {
+     "label": "content",
+     "arasaac": 35547,
+     "spoken": "Je suis content"
+    },
+    {
+     "label": "triste",
+     "arasaac": 35545,
+     "spoken": "Je suis triste"
+    },
+    {
+     "label": "fâché",
+     "arasaac": 35539,
+     "spoken": "Je suis fâché"
+    },
+    {
+     "label": "peur",
+     "arasaac": 35571,
+     "spoken": "J'ai peur"
+    },
+    {
+     "label": "fatigué",
+     "arasaac": 35537,
+     "spoken": "Je suis fatigué"
+    },
+    {
+     "label": "malade",
+     "arasaac": 3308,
+     "spoken": "Je suis malade"
+    },
+    {
+     "label": "calme",
+     "arasaac": 37828,
+     "spoken": "Je suis calme"
+    },
+    {
+     "label": "surpris",
+     "arasaac": 35529,
+     "spoken": "Je suis surpris"
+    }
+   ]
+  },
+  {
+   "title": "École",
+   "columns": 4,
+   "rows": 3,
+   "items": [
+    {
+     "label": "école",
+     "arasaac": 32446,
+     "spoken": "l'école"
+    },
+    {
+     "label": "cartable",
+     "arasaac": 2475,
+     "spoken": "le cartable"
+    },
+    {
+     "label": "crayon",
+     "arasaac": 2440,
+     "spoken": "un crayon"
+    },
+    {
+     "label": "ciseaux",
+     "arasaac": 2591,
+     "spoken": "les ciseaux"
+    },
+    {
+     "label": "colle",
+     "arasaac": 2709,
+     "spoken": "la colle"
+    },
+    {
+     "label": "cahier",
+     "arasaac": 2359,
+     "spoken": "le cahier"
+    },
+    {
+     "label": "peinture",
+     "arasaac": 4950,
+     "spoken": "la peinture"
+    },
+    {
+     "label": "pâte à modeler",
+     "arasaac": 2529,
+     "spoken": "la pâte à modeler"
+    },
+    {
+     "label": "récréation",
+     "arasaac": 27339,
+     "spoken": "la récréation"
+    },
+    {
+     "label": "cantine",
+     "arasaac": 9824,
+     "spoken": "la cantine"
+    },
+    {
+     "label": "bus",
+     "arasaac": 2263,
+     "spoken": "le bus"
+    },
+    {
+     "label": "s'asseoir",
+     "arasaac": 6611
+    }
+   ]
+  },
+  {
+   "title": "Animaux",
+   "columns": 4,
+   "rows": 3,
+   "items": [
+    {
+     "label": "chien",
+     "arasaac": 7202,
+     "spoken": "un chien"
+    },
+    {
+     "label": "chat",
+     "arasaac": 7114,
+     "spoken": "un chat"
+    },
+    {
+     "label": "lapin",
+     "arasaac": 2351,
+     "spoken": "un lapin"
+    },
+    {
+     "label": "oiseau",
+     "arasaac": 2490,
+     "spoken": "un oiseau"
+    },
+    {
+     "label": "poisson",
+     "arasaac": 2520,
+     "spoken": "un poisson"
+    },
+    {
+     "label": "cheval",
+     "arasaac": 2294,
+     "spoken": "un cheval"
+    },
+    {
+     "label": "vache",
+     "arasaac": 2609,
+     "spoken": "une vache"
+    },
+    {
+     "label": "cochon",
+     "arasaac": 24972,
+     "spoken": "un cochon"
+    },
+    {
+     "label": "mouton",
+     "arasaac": 2489,
+     "spoken": "un mouton"
+    },
+    {
+     "label": "poule",
+     "arasaac": 2403,
+     "spoken": "une poule"
+    },
+    {
+     "label": "canard",
+     "arasaac": 28479,
+     "spoken": "un canard"
+    },
+    {
+     "label": "éléphant",
+     "arasaac": 2372,
+     "spoken": "un éléphant"
+    }
+   ]
+  },
+  {
+   "title": "Lieux et sorties",
+   "columns": 4,
+   "rows": 3,
+   "items": [
+    {
+     "label": "maison",
+     "arasaac": 6964,
+     "spoken": "la maison"
+    },
+    {
+     "label": "parc",
+     "arasaac": 2434,
+     "spoken": "le parc"
+    },
+    {
+     "label": "aire de jeux",
+     "arasaac": 2859,
+     "spoken": "l'aire de jeux"
+    },
+    {
+     "label": "piscine",
+     "arasaac": 30516,
+     "spoken": "la piscine"
+    },
+    {
+     "label": "supermarché",
+     "arasaac": 3389,
+     "spoken": "le supermarché"
+    },
+    {
+     "label": "boulangerie",
+     "arasaac": 6576,
+     "spoken": "la boulangerie"
+    },
+    {
+     "label": "plage",
+     "arasaac": 30518,
+     "spoken": "la plage"
+    },
+    {
+     "label": "forêt",
+     "arasaac": 2666,
+     "spoken": "la forêt"
+    },
+    {
+     "label": "restaurant",
+     "arasaac": 32408,
+     "spoken": "le restaurant"
+    },
+    {
+     "label": "bibliothèque",
+     "arasaac": 6063,
+     "spoken": "la bibliothèque"
+    },
+    {
+     "label": "promenade",
+     "arasaac": 8649,
+     "spoken": "une promenade"
+    },
+    {
+     "label": "voiture",
+     "arasaac": 2339,
+     "spoken": "la voiture"
+    }
+   ]
+  }
+ ]
+}

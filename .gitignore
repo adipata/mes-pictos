@@ -1,0 +1,8 @@
+# Xcode / SwiftPM
+xcuserdata/
+DerivedData/
+build/
+.build/
+.swiftpm/
+*.xcresult
+.DS_Store
