@@ -10,7 +10,8 @@ of step 2 (ARASAAC search and the bundled starter kit) is in.
 
 - **Child mode.** Pages of large cards (1 to 4 by default). Tapping a card speaks it in French
   and brings it to the centre of the screen (**show mode**) so the child can show it to an adult.
-  An adult closes it, and the card flies back to its place.
+  An adult closes it, and the card flies back to its place. Tapping the enlarged card speaks it again;
+  swiping it in any direction throws it off the screen and closes it (unless closing is set to adult only).
 - **Permanent bar** with three actions, visible on every page: "J'ai besoin d'aide", "Je veux", "Ouvre".
 - **Sentence bar** (*bande phrase*). Tapping an action speaks it and slides a second bar up, just above the
   permanent bar. The child then taps one or more cards on the page (default 2) and they join the sentence.

@@ -61,7 +61,7 @@ enum SettingsDefault {
 
 /// How the card shown in the centre is closed.
 enum DismissMode: String, CaseIterable, Identifiable {
-    /// Tap outside the card, or swipe down.
+    /// Tap outside the card, swipe the card away, or swipe down outside it.
     case tapOutside
     /// Long press (1 s) outside the card, so the child does not close it before showing it.
     case adultLongPress
@@ -70,7 +70,7 @@ enum DismissMode: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .tapOutside: return "Toucher à côté ou glisser vers le bas"
+        case .tapOutside: return "Toucher à côté ou glisser la carte"
         case .adultLongPress: return "Appui long (adulte)"
         }
     }

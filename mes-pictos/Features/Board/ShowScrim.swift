@@ -4,6 +4,8 @@ import SwiftUI
 /// and the hint at the bottom of the screen.
 struct ShowScrim: View {
     let dismissMode: DismissMode
+    /// The shown card can also be swiped away (single card only, not the sentence).
+    var canSwipeCard = false
     let onClose: () -> Void
 
     var body: some View {
@@ -26,12 +28,19 @@ struct ShowScrim: View {
 
             VStack {
                 Spacer()
-                Text(dismissMode == .tapOutside ? "Touchez à côté pour fermer" : "Appui long à côté pour fermer")
+                Text(hint)
                     .font(.footnote)
                     .foregroundStyle(Color.white.opacity(0.55))
                     .padding(.bottom, 16)
             }
             .allowsHitTesting(false)
+        }
+    }
+
+    private var hint: LocalizedStringKey {
+        switch dismissMode {
+        case .tapOutside: canSwipeCard ? "Glissez la carte ou touchez à côté pour fermer" : "Touchez à côté pour fermer"
+        case .adultLongPress: "Appui long à côté pour fermer"
         }
     }
 }

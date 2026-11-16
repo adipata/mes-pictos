@@ -236,3 +236,49 @@ final class SilentAudioTests: XCTestCase {
         XCTAssertTrue(data[44...].allSatisfy { $0 == 0 }, "Silence")
     }
 }
+
+final class SwipeDismissTests: XCTestCase {
+    private let side: CGFloat = 500
+
+    func testSmallMovementDoesNotClose() {
+        // A wobbly tap or a slow, short drag: the card stays.
+        XCTAssertFalse(SwipeDismiss.shouldDismiss(translation: CGSize(width: 12, height: -8),
+                                                  predictedEndTranslation: CGSize(width: 30, height: -20),
+                                                  cardSide: side))
+        XCTAssertFalse(SwipeDismiss.shouldDismiss(translation: CGSize(width: 60, height: 0),
+                                                  predictedEndTranslation: CGSize(width: 70, height: 0),
+                                                  cardSide: side))
+    }
+
+    func testLongDragClosesInAnyDirection() {
+        let distance = SwipeDismiss.dismissDistance(cardSide: side)
+        XCTAssertEqual(distance, 110)
+        for translation in [CGSize(width: distance, height: 0), CGSize(width: -distance, height: 0),
+                            CGSize(width: 0, height: distance), CGSize(width: 0, height: -distance)] {
+            XCTAssertTrue(SwipeDismiss.shouldDismiss(translation: translation, predictedEndTranslation: translation, cardSide: side))
+        }
+    }
+
+    func testFlickCloses() {
+        XCTAssertTrue(SwipeDismiss.shouldDismiss(translation: CGSize(width: 50, height: 0),
+                                                 predictedEndTranslation: CGSize(width: 300, height: 0),
+                                                 cardSide: side))
+        // Too short a movement, even if fast: still not a swipe.
+        XCTAssertFalse(SwipeDismiss.shouldDismiss(translation: CGSize(width: 25, height: 0),
+                                                  predictedEndTranslation: CGSize(width: 300, height: 0),
+                                                  cardSide: side))
+    }
+
+    func testSmallCardsUseTheMinimumDistance() {
+        XCTAssertEqual(SwipeDismiss.dismissDistance(cardSide: 200), SwipeDismiss.minimumDismissDistance)
+    }
+
+    func testFlyAwayFollowsTheSwipe() {
+        let screen = CGSize(width: 800, height: 600)
+        let offset = SwipeDismiss.flyAwayOffset(translation: CGSize(width: -120, height: 0),
+                                                predictedEndTranslation: CGSize(width: -400, height: 0),
+                                                containerSize: screen)
+        XCTAssertLessThan(offset.width, -screen.width)
+        XCTAssertEqual(offset.height, 0, accuracy: 0.001)
+    }
+}
