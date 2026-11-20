@@ -4,7 +4,7 @@ import SwiftUI
 /// and the hint at the bottom of the screen.
 struct ShowScrim: View {
     let dismissMode: DismissMode
-    /// The shown card can also be swiped away (single card only, not the sentence).
+    /// The shown card or sentence can also be swiped away.
     var canSwipeCard = false
     let onClose: () -> Void
 
