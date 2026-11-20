@@ -21,7 +21,8 @@ of step 2 (ARASAAC search and the bundled starter kit) is in.
   Tapping a card without an action first still shows and speaks that card alone. Action cards have a thick green border. Any card can be made an
   action ("Début de phrase") in its editor.
 - **Parent mode**: press the lock for 3 seconds (optionally followed by a code, Face ID, or Touch ID).
-  - Create, rename, reorder, and delete pages. Choose the grid size. Hide a page for the child (long-press its tab
+  - Create, rename, reorder, and delete pages. Choose the grid size, up to 10 × 10 cards (the page scrolls when
+    cards would get too small for the screen). Hide a page for the child (long-press its tab
     ▸ "Masquer pour l'enfant", or in the page settings): it keeps its cards and can be shown again in one tap.
   - Create a card from a photo (library or camera), crop it, set its label and spoken text, and record your voice.
   - Or pick a card from the **whole ARASAAC library** (about 13 000 pictograms with French keywords):

@@ -6,7 +6,41 @@ final class GridMathTests: XCTestCase {
     func testGridSizeIsClamped() {
         let size = GridSize(columns: 0, rows: 99)
         XCTAssertEqual(size.columns, 1)
-        XCTAssertEqual(size.rows, 6)
+        XCTAssertEqual(size.rows, 10)
+    }
+
+    func testGridAllowsMoreThanTwentyCards() {
+        XCTAssertEqual(GridSize(columns: 6, rows: 5).capacity, 30)
+        XCTAssertEqual(GridSize(columns: 10, rows: 10).capacity, 100)
+        XCTAssertEqual(GridMath.firstFreeSlot(occupied: Set(0..<20), capacity: GridSize(columns: 6, rows: 4).capacity), 20)
+    }
+
+    func testResizeToABigGridKeepsPositions() {
+        let result = GridMath.resize(["a": 0, "b": 19], from: GridSize(columns: 5, rows: 4), to: GridSize(columns: 8, rows: 6))
+        // b was at (3,4): row 3, column 4 → 3 * 8 + 4.
+        XCTAssertEqual(result, ["a": 0, "b": 28])
+    }
+
+    func testLayoutFillsTheSpaceWhenCardsAreBigEnough() {
+        let layout = GridLayout(columns: 4, rows: 3, available: CGSize(width: 1000, height: 600), spacing: 20, minimumSide: 60)
+        XCTAssertEqual(layout.side, (600 - 40) / 3, accuracy: 0.001)
+        XCTAssertFalse(layout.scrolls)
+    }
+
+    func testLayoutScrollsInsteadOfMakingTinyCards() {
+        // 6 columns × 10 rows on a phone-sized area: height would give 46 pt cards.
+        let layout = GridLayout(columns: 6, rows: 10, available: CGSize(width: 400, height: 550), spacing: 10, minimumSide: 56)
+        XCTAssertEqual(layout.side, 56)
+        XCTAssertTrue(layout.scrollsVertically)
+        XCTAssertFalse(layout.scrollsHorizontally)
+        XCTAssertEqual(layout.contentSize.height, 56 * 10 + 10 * 9, accuracy: 0.001)
+    }
+
+    func testLayoutScrollsSidewaysWhenTooManyColumns() {
+        let layout = GridLayout(columns: 10, rows: 1, available: CGSize(width: 350, height: 76), spacing: 8, minimumSide: 56)
+        XCTAssertEqual(layout.side, 56)
+        XCTAssertTrue(layout.scrollsHorizontally)
+        XCTAssertFalse(layout.scrollsVertically)
     }
 
     func testFirstFreeSlot() {

@@ -25,7 +25,9 @@ struct PageSettingsView: View {
     private static let presets = [
         Preset(columns: 1, rows: 1), Preset(columns: 2, rows: 1), Preset(columns: 2, rows: 2),
         Preset(columns: 3, rows: 2), Preset(columns: 3, rows: 3), Preset(columns: 4, rows: 3),
-        Preset(columns: 5, rows: 4),
+        Preset(columns: 5, rows: 4), Preset(columns: 6, rows: 4), Preset(columns: 6, rows: 5),
+        Preset(columns: 8, rows: 5), Preset(columns: 8, rows: 6), Preset(columns: 10, rows: 6),
+        Preset(columns: 10, rows: 8),
     ]
 
     init(page: Page) {
@@ -78,7 +80,7 @@ struct PageSettingsView: View {
                 } footer: {
                     Text(isBar
                          ? "\(columns) cases dans la barre."
-                         : "\(columns * rows) cases. Au début, peu de grandes cartes aident l'enfant à choisir. Les cartes gardent leur place quand la grille change.")
+                         : "\(columns * rows) cases. Au début, peu de grandes cartes aident l'enfant à choisir. Les cartes gardent leur place quand la grille change. Si les cartes deviennent trop petites pour l'écran, la page défile.")
                 }
 
                 if !isBar {
