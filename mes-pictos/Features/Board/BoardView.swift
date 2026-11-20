@@ -237,35 +237,73 @@ struct BoardView: View {
 }
 
 /// Toolbar shown at the top in parent mode.
+///
+/// Labels never wrap or get hyphenated: when the full version ("Page", "Réglages") does not fit
+/// on one line, as on an iPhone, the buttons switch to icons only and the title shortens to
+/// "Parent". VoiceOver still reads the full names.
 private struct ParentToolbar: View {
     let currentPage: Page?
     let onDone: () -> Void
     @Environment(BoardModel.self) private var board
 
     var body: some View {
-        HStack(spacing: 12) {
-            Label("Mode parent", systemImage: "lock.open.fill")
-                .font(.headline)
-                .foregroundStyle(Color.accentColor)
-            Spacer()
-            if let currentPage {
-                Button {
-                    board.pageSettings = currentPage
-                } label: {
-                    Label("Page", systemImage: "square.grid.2x2")
-                }
-            }
-            Button {
-                board.showSettings = true
-            } label: {
-                Label("Réglages", systemImage: "gearshape")
-            }
-            Button("Terminé", action: onDone)
-                .buttonStyle(.borderedProminent)
+        ViewThatFits(in: .horizontal) {
+            content(compact: false)
+            content(compact: true)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
         .background(Color(.secondarySystemGroupedBackground))
+    }
+
+    private func content(compact: Bool) -> some View {
+        HStack(spacing: compact ? 4 : 16) {
+            Label(compact ? "Parent" : "Mode parent", systemImage: "lock.open.fill")
+                .font(.headline)
+                .foregroundStyle(Color.accentColor)
+                .lineLimit(1)
+                .fixedSize()
+                .accessibilityLabel("Mode parent")
+            Spacer(minLength: compact ? 8 : 24)
+            if let currentPage {
+                toolbarButton("Page", systemImage: "square.grid.2x2", compact: compact) {
+                    board.pageSettings = currentPage
+                }
+                .accessibilityLabel("Réglages de la page")
+            }
+            toolbarButton("Réglages", systemImage: "gearshape", compact: compact) {
+                board.showSettings = true
+            }
+            Button(action: onDone) {
+                Text("Terminé")
+                    .lineLimit(1)
+                    .fixedSize()
+            }
+            .buttonStyle(.borderedProminent)
+            .padding(.leading, compact ? 4 : 0)
+        }
+    }
+
+    @ViewBuilder
+    private func toolbarButton(
+        _ title: LocalizedStringKey,
+        systemImage: String,
+        compact: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            if compact {
+                Label(title, systemImage: systemImage)
+                    .labelStyle(.iconOnly)
+                    .imageScale(.large)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            } else {
+                Label(title, systemImage: systemImage)
+                    .lineLimit(1)
+                    .fixedSize()
+            }
+        }
     }
 }
 
