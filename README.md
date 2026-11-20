@@ -26,7 +26,8 @@ of step 2 (ARASAAC search and the bundled starter kit) is in.
   - Create a card from a photo (library or camera), crop it, set its label and spoken text, and record your voice.
   - Or pick a card from the **whole ARASAAC library** (about 13 000 pictograms with French keywords):
     "Chercher un pictogramme ARASAAC" in the card editor. The image is downloaded once and then works offline.
-  - Move cards: drag onto another slot (cards swap), or onto a page tab. You can also long-press a card and use the
+  - Move cards: drag onto another slot (cards swap), or onto the page menu (hold to open it, then
+    hold over a page to open that page). You can also long-press a card and use the
     menu: "Déplacer vers…", "Ajouter aussi sur…", "Masquer pour l'enfant", "Retirer de la page".
 - **Starter kit** (*kit de démarrage*): 113 ARASAAC pictograms bundled with the app, offered at first launch and
   in the settings ("Ajouter le kit de démarrage"). The three actions go on the permanent bar, and there is one page
@@ -90,7 +91,7 @@ mes-pictos/
   App/                       app entry point
   Model/                     SwiftData models (CloudKit compatible) and PictoStore (all edits)
   Services/                  speech, voice recording, images, settings, device authentication
-  Features/Board/            child mode, show mode, sentence bar and its overlay, page tabs, grid, drag and drop
+  Features/Board/            child mode, show mode, sentence bar and its overlay, page menu, grid, drag and drop
   Features/Editor/           pictogram editor, crop, camera, page settings
   Features/SymbolSearch/     ARASAAC search sheet
   Resources/StarterKit/      StarterKit.json + one arasaac-<id>.png per pictogram (generated, see tools/)
