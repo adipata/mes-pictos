@@ -1,9 +1,10 @@
 import Foundation
+import CoreGraphics
 
 /// Size of a page grid. Slots are numbered row by row: `slot = row * columns + column`.
 public struct GridSize: Equatable, Sendable {
-    public static let columnRange = 1...8
-    public static let rowRange = 1...6
+    public static let columnRange = 1...10
+    public static let rowRange = 1...10
 
     public let columns: Int
     public let rows: Int
@@ -61,4 +62,35 @@ public enum GridMath {
         }
         return result
     }
+}
+
+/// Size of the cards of a page grid on screen.
+///
+/// Cards fill the available space. When that would make them smaller than `minimumSide`
+/// (a big grid on a small screen), they keep `minimumSide` and the grid scrolls instead,
+/// so every card stays big enough to see and tap.
+public struct CardGridLayout: Equatable, Sendable {
+    public let side: CGFloat
+    public let contentSize: CGSize
+    public let scrollsHorizontally: Bool
+    public let scrollsVertically: Bool
+
+    public init(columns: Int, rows: Int, available: CGSize, spacing: CGFloat, minimumSide: CGFloat) {
+        let columns = max(columns, 1)
+        let rows = max(rows, 1)
+        let fitWidth = (available.width - spacing * CGFloat(columns - 1)) / CGFloat(columns)
+        let fitHeight = (available.height - spacing * CGFloat(rows - 1)) / CGFloat(rows)
+        let side = max(minimumSide, min(fitWidth, fitHeight), 1)
+        let size = CGSize(
+            width: side * CGFloat(columns) + spacing * CGFloat(columns - 1),
+            height: side * CGFloat(rows) + spacing * CGFloat(rows - 1)
+        )
+        self.side = side
+        self.contentSize = size
+        // Half a point of tolerance for rounding.
+        self.scrollsHorizontally = size.width > available.width + 0.5
+        self.scrollsVertically = size.height > available.height + 0.5
+    }
+
+    public var scrolls: Bool { scrollsHorizontally || scrollsVertically }
 }

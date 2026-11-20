@@ -1,38 +1,69 @@
 import SwiftUI
 import SwiftData
+import PictoCore
 
-/// A page laid out as a fixed grid. Every slot is always visible: no scrolling.
+/// A page laid out as a fixed grid. Cards fill the space; when a big grid would make them too
+/// small to see and tap, they keep `minimumSide` and the page scrolls instead.
 struct GridPageView: View {
     let page: Page
     /// Pages offered in the "Move to / Duplicate to" menus.
     let menuPages: [Page]
     let namespace: Namespace.ID
     var spacing: CGFloat = 16
+    /// Smallest card side before the grid starts to scroll.
+    var minimumSide: CGFloat = 56
 
     var body: some View {
         GeometryReader { geometry in
-            let columns = page.columns
-            let rows = page.rows
-            let cellWidth = (geometry.size.width - spacing * CGFloat(columns - 1)) / CGFloat(columns)
-            let cellHeight = (geometry.size.height - spacing * CGFloat(rows - 1)) / CGFloat(rows)
-            let side = max(20, min(cellWidth, cellHeight))
+            let layout = CardGridLayout(
+                columns: page.columns,
+                rows: page.rows,
+                available: geometry.size,
+                spacing: spacing,
+                minimumSide: minimumSide
+            )
 
-            VStack(spacing: spacing) {
-                ForEach(0..<rows, id: \.self) { row in
-                    HStack(spacing: spacing) {
-                        ForEach(0..<columns, id: \.self) { column in
-                            SlotView(
-                                page: page,
-                                slot: row * columns + column,
-                                menuPages: menuPages,
-                                namespace: namespace
-                            )
-                            .frame(width: side, height: side)
-                        }
+            if layout.scrolls {
+                ScrollView(Self.scrollAxes(layout)) {
+                    grid(side: layout.side)
+                        .frame(
+                            minWidth: geometry.size.width,
+                            minHeight: geometry.size.height
+                        )
+                }
+                .scrollBounceBehavior(.basedOnSize)
+                // A new page starts at the top.
+                .id(page.id)
+            } else {
+                grid(side: layout.side)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+            }
+        }
+    }
+
+    private static func scrollAxes(_ layout: CardGridLayout) -> Axis.Set {
+        var axes: Axis.Set = []
+        if layout.scrollsHorizontally { axes.insert(.horizontal) }
+        if layout.scrollsVertically { axes.insert(.vertical) }
+        return axes
+    }
+
+    private func grid(side: CGFloat) -> some View {
+        let columns = page.columns
+        return VStack(spacing: spacing) {
+            ForEach(0..<page.rows, id: \.self) { row in
+                HStack(spacing: spacing) {
+                    ForEach(0..<columns, id: \.self) { column in
+                        SlotView(
+                            page: page,
+                            slot: row * columns + column,
+                            menuPages: menuPages,
+                            namespace: namespace
+                        )
+                        .frame(width: side, height: side)
                     }
                 }
             }
-            .frame(width: geometry.size.width, height: geometry.size.height)
         }
     }
 }

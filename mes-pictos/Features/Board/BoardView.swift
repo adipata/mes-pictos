@@ -120,7 +120,7 @@ struct BoardView: View {
                 .padding(.top, 8)
 
             if let page = currentPage {
-                GridPageView(page: page, menuPages: menuPages, namespace: hero, spacing: isCompact ? 10 : 18)
+                GridPageView(page: page, menuPages: menuPages, namespace: hero, spacing: isCompact ? 10 : 18, minimumSide: isCompact ? 56 : 72)
                     .padding(isCompact ? 12 : 24)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
