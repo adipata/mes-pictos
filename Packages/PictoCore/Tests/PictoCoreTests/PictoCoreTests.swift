@@ -22,14 +22,14 @@ final class GridMathTests: XCTestCase {
     }
 
     func testLayoutFillsTheSpaceWhenCardsAreBigEnough() {
-        let layout = GridLayout(columns: 4, rows: 3, available: CGSize(width: 1000, height: 600), spacing: 20, minimumSide: 60)
+        let layout = CardGridLayout(columns: 4, rows: 3, available: CGSize(width: 1000, height: 600), spacing: 20, minimumSide: 60)
         XCTAssertEqual(layout.side, (600 - 40) / 3, accuracy: 0.001)
         XCTAssertFalse(layout.scrolls)
     }
 
     func testLayoutScrollsInsteadOfMakingTinyCards() {
         // 6 columns × 10 rows on a phone-sized area: height would give 46 pt cards.
-        let layout = GridLayout(columns: 6, rows: 10, available: CGSize(width: 400, height: 550), spacing: 10, minimumSide: 56)
+        let layout = CardGridLayout(columns: 6, rows: 10, available: CGSize(width: 400, height: 550), spacing: 10, minimumSide: 56)
         XCTAssertEqual(layout.side, 56)
         XCTAssertTrue(layout.scrollsVertically)
         XCTAssertFalse(layout.scrollsHorizontally)
@@ -37,7 +37,7 @@ final class GridMathTests: XCTestCase {
     }
 
     func testLayoutScrollsSidewaysWhenTooManyColumns() {
-        let layout = GridLayout(columns: 10, rows: 1, available: CGSize(width: 350, height: 76), spacing: 8, minimumSide: 56)
+        let layout = CardGridLayout(columns: 10, rows: 1, available: CGSize(width: 350, height: 76), spacing: 8, minimumSide: 56)
         XCTAssertEqual(layout.side, 56)
         XCTAssertTrue(layout.scrollsHorizontally)
         XCTAssertFalse(layout.scrollsVertically)

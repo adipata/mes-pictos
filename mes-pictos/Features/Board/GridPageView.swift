@@ -15,7 +15,7 @@ struct GridPageView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            let layout = GridLayout(
+            let layout = CardGridLayout(
                 columns: page.columns,
                 rows: page.rows,
                 available: geometry.size,
@@ -41,7 +41,7 @@ struct GridPageView: View {
         }
     }
 
-    private static func scrollAxes(_ layout: GridLayout) -> Axis.Set {
+    private static func scrollAxes(_ layout: CardGridLayout) -> Axis.Set {
         var axes: Axis.Set = []
         if layout.scrollsHorizontally { axes.insert(.horizontal) }
         if layout.scrollsVertically { axes.insert(.vertical) }

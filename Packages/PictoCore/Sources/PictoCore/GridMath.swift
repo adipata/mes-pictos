@@ -69,7 +69,7 @@ public enum GridMath {
 /// Cards fill the available space. When that would make them smaller than `minimumSide`
 /// (a big grid on a small screen), they keep `minimumSide` and the grid scrolls instead,
 /// so every card stays big enough to see and tap.
-public struct GridLayout: Equatable, Sendable {
+public struct CardGridLayout: Equatable, Sendable {
     public let side: CGFloat
     public let contentSize: CGSize
     public let scrollsHorizontally: Bool
