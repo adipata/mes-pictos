@@ -152,7 +152,7 @@ struct SettingsView: View {
                     Text(style.displayName).tag(style.rawValue)
                 }
             }
-            Toggle("Onglets des pages visibles pour l'enfant", isOn: $showPageTabs)
+            Toggle("Menu des pages visible pour l'enfant", isOn: $showPageTabs)
             VStack(alignment: .leading) {
                 Text("Ignorer les touches répétées : \(tapInterval, specifier: "%.1f") s")
                 Slider(value: $tapInterval, in: 0...2, step: 0.1)
@@ -160,7 +160,7 @@ struct SettingsView: View {
         } header: {
             Text("Affichage")
         } footer: {
-            Text("Sans onglets, l'enfant reste sur la page choisie en mode parent.")
+            Text("Sans menu des pages, l'enfant reste sur la page choisie en mode parent.")
         }
     }
 

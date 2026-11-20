@@ -142,7 +142,7 @@ struct BoardView: View {
     private var topRow: some View {
         HStack(spacing: 12) {
             if board.isParentMode || (showPageTabs && visiblePages.count > 1) {
-                PageTabsView(pages: visiblePages, selectedID: currentPage?.id)
+                PageMenuView(pages: visiblePages, selectedID: currentPage?.id)
             } else {
                 Spacer()
             }
@@ -150,7 +150,7 @@ struct BoardView: View {
                 ParentLockButton(onUnlock: requestParentMode)
             }
         }
-        .frame(minHeight: isCompact ? 56 : 72)
+        .frame(minHeight: isCompact ? 64 : 80)
     }
 
     private func permanentBar(_ bar: Page) -> some View {

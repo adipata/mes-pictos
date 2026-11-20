@@ -1,7 +1,9 @@
 name: CI
 
 on:
+  # Pushes to PR branches are already tested by the pull_request run, so only main runs on push.
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
