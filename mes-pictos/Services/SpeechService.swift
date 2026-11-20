@@ -9,22 +9,17 @@ final class SpeechService {
 
     /// Kept for the app's lifetime: a deallocated synthesizer stops speaking.
     private let synthesizer = AVSpeechSynthesizer()
-    private var player: AVAudioPlayer?
+    /// Audio session and recordings, handled off the main thread.
+    private let audio = AudioOutput()
     private let relay = SpeechRelay()
+    /// Bumped by `stop()`: callbacks from a recording started before it are ignored.
+    private var playbackID = 0
+    private var isPlayingRecording = false
 
     /// The utterance of the sequence being read. Callbacks for any other utterance are ignored.
     private var currentUtterance: AVSpeechUtterance?
     private var sequence: Sequence?
 
-    /// Looping silence that keeps the speaker route awake while the app is in the foreground.
-    /// Without it, the output powers down between taps and the first syllable of the next word is cut.
-    private lazy var keepAlive: AVAudioPlayer? = {
-        guard let player = try? AVAudioPlayer(data: SilentAudio.wavData(seconds: 2)) else { return nil }
-        player.numberOfLoops = -1
-        player.volume = 0
-        player.prepareToPlay()
-        return player
-    }()
     /// Voice identifier the synthesizer has already been warmed up with since the app became active.
     private var prewarmedVoiceID: String?
 
@@ -40,13 +35,10 @@ final class SpeechService {
         synthesizer.delegate = relay
     }
 
-    /// `.playback` so the app speaks even when the silent switch is on. No ducking: the silent
-    /// keep-alive runs all the time, ducking would lower other apps' audio permanently.
+    /// Sets the session up for speaking and starts the silent keep-alive. Returns at once:
+    /// the session work runs on the audio queue (see `AudioOutput`).
     func configureSession() {
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playback, mode: .spokenAudio, options: [])
-        try? session.setActive(true)
-        startKeepAlive()
+        audio.configureForPlayback()
     }
 
     // MARK: Foreground and background
@@ -59,22 +51,13 @@ final class SpeechService {
     }
 
     func appDidEnterBackground() {
-        stopKeepAlive()
+        audio.stopKeepAlive()
     }
 
-    /// The recorder is about to switch the session to recording.
-    func prepareForRecording() {
+    /// Stops speaking and switches the session to recording. Returns once the session is ready.
+    func prepareForRecording() async throws {
         stop()
-        stopKeepAlive()
-    }
-
-    private func startKeepAlive() {
-        guard let keepAlive, !keepAlive.isPlaying else { return }
-        keepAlive.play()
-    }
-
-    private func stopKeepAlive() {
-        keepAlive?.pause()
+        try await audio.configureForRecording()
     }
 
     /// Loads the voice before the first real tap: speaks a short word at volume 0.
@@ -101,8 +84,8 @@ final class SpeechService {
         stop()
         switch SpeechResolver.resolve(label: label, spokenText: spokenText, recording: recording) {
         case .recording(let data):
-            if !play(data) {
-                speakText(spokenText ?? label)
+            play(data) { [weak self] in
+                self?.speakText(spokenText ?? label)
             }
         case .text(let text):
             speakText(text)
@@ -111,13 +94,33 @@ final class SpeechService {
         }
     }
 
-    @discardableResult
-    func play(_ recording: Data) -> Bool {
+    /// Plays a recording. `onFailed` runs if it cannot be played, unless `stop()` was called since.
+    func play(_ recording: Data, onFailed: (@MainActor @Sendable () -> Void)? = nil) {
         stop()
-        guard let player = try? AVAudioPlayer(data: recording) else { return false }
-        self.player = player
-        player.prepareToPlay()
-        return player.play()
+        startRecording(recording, onFailed: { onFailed?() }, onFinished: {})
+    }
+
+    /// Starts a recording on the audio queue. The callbacks run only if nothing stopped it meanwhile.
+    private func startRecording(
+        _ data: Data,
+        onFailed: @escaping @MainActor @Sendable () -> Void,
+        onFinished: @escaping @MainActor @Sendable () -> Void
+    ) {
+        let id = playbackID
+        isPlayingRecording = true
+        audio.play(
+            data,
+            onFailed: { [weak self] in
+                guard let self, self.playbackID == id else { return }
+                self.isPlayingRecording = false
+                onFailed()
+            },
+            onFinished: { [weak self] in
+                guard let self, self.playbackID == id else { return }
+                self.isPlayingRecording = false
+                onFinished()
+            }
+        )
     }
 
     func speakText(_ text: String) {
@@ -157,14 +160,8 @@ final class SpeechService {
             synthesizer.speak(utterance)
         case .recording(let data, let index):
             current.onItem(index)
-            guard let player = try? AVAudioPlayer(data: data) else {
-                advance()
-                return
-            }
-            player.delegate = relay
-            self.player = player
-            player.prepareToPlay()
-            if !player.play() { advance() }
+            startRecording(data, onFailed: { [weak self] in self?.advance() },
+                           onFinished: { [weak self] in self?.advance() })
         }
     }
 
@@ -181,12 +178,13 @@ final class SpeechService {
         if synthesizer.isSpeaking {
             synthesizer.stopSpeaking(at: .immediate)
         }
-        player?.stop()
-        player = nil
+        playbackID &+= 1
+        isPlayingRecording = false
+        audio.stopPlayback()
         interrupted?.onEnd(false)
     }
 
-    var isSpeaking: Bool { sequence != nil || synthesizer.isSpeaking || (player?.isPlaying ?? false) }
+    var isSpeaking: Bool { sequence != nil || synthesizer.isSpeaking || isPlayingRecording }
 
     // MARK: Relay callbacks (main actor)
 
@@ -207,12 +205,6 @@ final class SpeechService {
 
     fileprivate func didCancel(_ utterance: AVSpeechUtterance) {
         if utterance === currentUtterance { currentUtterance = nil }
-    }
-
-    fileprivate func playerDidFinish() {
-        guard sequence != nil else { return }
-        player = nil
-        advance()
     }
 
     // MARK: Voice
@@ -259,9 +251,9 @@ final class SpeechService {
     }
 }
 
-/// AVFoundation delegate proxy: forwards the callbacks to the service on the main actor.
+/// Synthesizer delegate proxy: forwards the callbacks to the service on the main actor.
 /// They arrive on the main thread in practice, but this does not rely on it.
-private final class SpeechRelay: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
+private final class SpeechRelay: NSObject, AVSpeechSynthesizerDelegate {
     weak var service: SpeechService?
 
     private func onMain(_ body: @escaping @MainActor () -> Void) {
@@ -282,9 +274,5 @@ private final class SpeechRelay: NSObject, AVSpeechSynthesizerDelegate, AVAudioP
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
         onMain { self.service?.didCancel(utterance) }
-    }
-
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        onMain { self.service?.playerDidFinish() }
     }
 }

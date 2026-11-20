@@ -20,12 +20,10 @@ final class VoiceRecorder {
             return
         }
         permissionDenied = false
-        SpeechService.shared.prepareForRecording()
 
-        let session = AVAudioSession.sharedInstance()
         do {
-            try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
-            try session.setActive(true)
+            // Switches the session off the main thread, after any speech has been stopped.
+            try await SpeechService.shared.prepareForRecording()
             try? FileManager.default.removeItem(at: fileURL)
             let settings: [String: Any] = [
                 AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
