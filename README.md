@@ -16,7 +16,8 @@ of step 2 (ARASAAC search and the bundled starter kit) is in.
 - **Sentence bar** (*bande phrase*). Tapping an action speaks it and slides a second bar up, just above the
   permanent bar. The child then taps one or more cards on the page (default 2) and they join the sentence.
   The big green **Dire** button brings the whole sentence to the centre of the screen and reads it as one
-  sentence ("Je veux une pomme"), highlighting each card as it is spoken. Closing it clears the sentence.
+  sentence ("Je veux une pomme"), highlighting each card as it is spoken. Tapping it reads it again; swiping it in any direction
+  throws the whole sentence off the screen and closes it, like a single card. Closing it clears the sentence.
   Tapping a card on the sentence bar takes it off again (the action clears the whole sentence).
   Tapping a card without an action first still shows and speaks that card alone. Action cards have a thick green border. Any card can be made an
   action ("Début de phrase") in its editor.
