@@ -188,8 +188,14 @@ final class SpeechService {
 
     // MARK: Relay callbacks (main actor)
 
-    fileprivate func willSpeak(_ range: NSRange, of utterance: AVSpeechUtterance) {
-        guard utterance === currentUtterance, let current = sequence,
+    /// Utterances are not Sendable, so the relay hands over only their identity. That is enough:
+    /// `currentUtterance` keeps its utterance alive, so its identifier cannot be reused meanwhile.
+    private func isCurrent(_ utterance: ObjectIdentifier) -> Bool {
+        currentUtterance.map(ObjectIdentifier.init) == utterance
+    }
+
+    fileprivate func willSpeak(_ range: NSRange, of utterance: ObjectIdentifier) {
+        guard isCurrent(utterance), let current = sequence,
               current.index < current.segments.count,
               case .utterance(_, let pieces) = current.segments[current.index],
               let piece = pieces.last(where: { $0.utf16Range.lowerBound <= range.location })
@@ -197,14 +203,14 @@ final class SpeechService {
         current.onItem(piece.index)
     }
 
-    fileprivate func didFinish(_ utterance: AVSpeechUtterance) {
-        guard utterance === currentUtterance else { return }
+    fileprivate func didFinish(_ utterance: ObjectIdentifier) {
+        guard isCurrent(utterance) else { return }
         currentUtterance = nil
         advance()
     }
 
-    fileprivate func didCancel(_ utterance: AVSpeechUtterance) {
-        if utterance === currentUtterance { currentUtterance = nil }
+    fileprivate func didCancel(_ utterance: ObjectIdentifier) {
+        if isCurrent(utterance) { currentUtterance = nil }
     }
 
     // MARK: Voice
@@ -265,14 +271,17 @@ private final class SpeechRelay: NSObject, AVSpeechSynthesizerDelegate {
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
-        onMain { self.service?.willSpeak(characterRange, of: utterance) }
+        let id = ObjectIdentifier(utterance)
+        onMain { self.service?.willSpeak(characterRange, of: id) }
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        onMain { self.service?.didFinish(utterance) }
+        let id = ObjectIdentifier(utterance)
+        onMain { self.service?.didFinish(id) }
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
-        onMain { self.service?.didCancel(utterance) }
+        let id = ObjectIdentifier(utterance)
+        onMain { self.service?.didCancel(id) }
     }
 }
