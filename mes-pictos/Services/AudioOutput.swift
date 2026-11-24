@@ -162,9 +162,12 @@ nonisolated final class AudioOutput: NSObject, AVAudioPlayerDelegate, @unchecked
     }
 
     func audioPlayerDidFinishPlaying(_ finished: AVAudioPlayer, successfully flag: Bool) {
+        // Players are not Sendable: only their identity crosses to the queue.
+        let finishedID = ObjectIdentifier(finished)
         queue.async {
             // A player that was stopped or replaced in the meantime reports nothing.
-            guard finished === self.player, let callback = self.onPlayerFinished else { return }
+            guard let player = self.player, ObjectIdentifier(player) == finishedID,
+                  let callback = self.onPlayerFinished else { return }
             AudioLog.log("recording: finished (successfully: \(flag))")
             self.player = nil
             self.onPlayerFinished = nil
