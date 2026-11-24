@@ -48,6 +48,7 @@ struct SettingsView: View {
                 contentSection
                 syncSection
                 aboutSection
+                diagnosticSection
                 resetSection
             }
             .navigationTitle("Réglages")
@@ -290,6 +291,31 @@ struct SettingsView: View {
             Text("Réinitialiser")
         } footer: {
             Text("« Tout effacer » ramène l'application à son premier démarrage, où vous pourrez choisir le kit de démarrage. Pensez à faire une sauvegarde ou des captures d'écran avant.")
+        }
+    }
+
+    // MARK: Voice diagnostics
+
+    private var diagnosticSection: some View {
+        Section {
+            Button {
+                SpeechService.shared.resetAudio()
+                SpeechService.shared.speakText("La voix est relancée.")
+            } label: {
+                Label("Relancer la voix", systemImage: "arrow.clockwise")
+            }
+            ShareLink(item: AudioLog.fileURL) {
+                Label("Partager le journal audio", systemImage: "square.and.arrow.up")
+            }
+            Button(role: .destructive) {
+                AudioLog.clear()
+            } label: {
+                Label("Effacer le journal audio", systemImage: "trash")
+            }
+        } header: {
+            Text("Diagnostic de la voix")
+        } footer: {
+            Text("Si la voix se tait, essayez « Relancer la voix » avant de fermer l'application. Le journal audio garde la trace de ce qui s'est passé juste avant ; il reste sur cet iPad tant que vous ne le partagez pas.")
         }
     }
 
