@@ -34,14 +34,14 @@ final class VoiceRecorder {
             let recorder = try AVAudioRecorder(url: fileURL, settings: settings)
             guard recorder.record() else {
                 errorMessage = "L'enregistrement n'a pas pu démarrer."
-                SpeechService.shared.configureSession()
+                SpeechService.shared.configureSession(reason: "recording did not start")
                 return
             }
             self.recorder = recorder
             isRecording = true
         } catch {
             errorMessage = "L'enregistrement n'a pas pu démarrer."
-            SpeechService.shared.configureSession()
+            SpeechService.shared.configureSession(reason: "recording failed: \(error.localizedDescription)")
         }
     }
 
@@ -51,7 +51,7 @@ final class VoiceRecorder {
         recorder.stop()
         self.recorder = nil
         isRecording = false
-        SpeechService.shared.configureSession()
+        SpeechService.shared.configureSession(reason: "recording stopped")
         let data = try? Data(contentsOf: fileURL)
         try? FileManager.default.removeItem(at: fileURL)
         return (data?.isEmpty ?? true) ? nil : data

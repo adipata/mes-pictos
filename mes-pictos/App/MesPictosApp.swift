@@ -8,7 +8,7 @@ struct MesPictosApp: App {
 
     init() {
         container = Persistence.makeContainer()
-        SpeechService.shared.configureSession()
+        SpeechService.shared.configureSession(reason: "launch")
     }
 
     var body: some Scene {
@@ -17,6 +17,7 @@ struct MesPictosApp: App {
         }
         .modelContainer(container)
         .onChange(of: scenePhase, initial: true) { _, phase in
+            AudioLog.log("app: scene phase \(phase)")
             switch phase {
             case .active: SpeechService.shared.appDidBecomeActive()
             case .background: SpeechService.shared.appDidEnterBackground()
